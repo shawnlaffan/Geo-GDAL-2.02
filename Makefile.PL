@@ -65,7 +65,7 @@ end
 exit;
 }
 
-my $download = $ARGV{'--download-gdal-source'} || 'yes';
+my $download = ($ARGV{'--download-gdal-source'} || 'yes') =~ /^(yes|force)$/;
 my ($source_tree, $gdal_config);
 unless ($download eq 'force') {
     ($source_tree, $gdal_config) = find_gdal_config($ARGV{'--gdal-source-tree'}, $ARGV{'--gdal-config'});

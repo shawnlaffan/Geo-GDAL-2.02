@@ -243,8 +243,11 @@ sub find_gdal_config {
 
 sub get_config {
     my ($source_tree, $config) = @_;
-    my $INC = "-I$source_tree ";
-    my $LIB = "-L$source_tree/.libs -L$source_tree -lgdal ";
+
+    my $INC = $source_tree ? "-I$source_tree " : '';
+    my $LIB = $source_tree ? "-L$source_tree/.libs -L$source_tree " : '';
+    $LIB .= " -lgdal ";
+
     my $objects = { 
         'Geo::GDAL' => 'gdal_wrap.o',
         'Geo::OGR' => 'ogr_wrap.o',
@@ -274,7 +277,7 @@ sub get_config {
             }
             if (/CONFIG_GNM_ENABLED/ and /yes/) {
                 $objects->{'Geo::GNM'} = 'gnm_wrap.o';
-                $INC .= " -I$source_tree/gnm ";
+                $INC .= $source_tree ? " -I$source_tree/gnm " : '';
             }
         }
         close $fh;
